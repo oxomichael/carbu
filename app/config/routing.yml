@@ -1,3 +1,8 @@
+carbu:
+    resource: "@CarbuBundle/Controller/"
+    type:     annotation
+    prefix:   /carbu
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
