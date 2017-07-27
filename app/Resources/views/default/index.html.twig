@@ -3,9 +3,9 @@
 {% block body %}
 <div class="container">
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-	Bonjour {{ app.user.username }} - <a class="link" href="{{ path('logout') }}">Déconnexion</a>
+	Connecté en tant que {{ app.user.username }} - <a class="link" href="{{ path('logout') }}">Déconnexion</a>
 {% else %}
-	Vous n'êtes pas connecté
+	<a class="link" href="{{ path('fos_user_security_login') }}">Connexion</a>
 {% endif %}
 </div> <!-- /container -->
 {% endblock %}
