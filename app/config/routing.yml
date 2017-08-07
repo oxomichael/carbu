@@ -1,8 +1,3 @@
-carbu:
-    resource: "@CarbuBundle/Controller/"
-    type:     annotation
-    prefix:   /carbu
-
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -22,10 +17,15 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
-user:
-  resource: "@UserBundle/Controller/"
-  type: annotation
-
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+carbu:
+    resource: "@CarbuBundle/Controller/"
+    type:     annotation
+    prefix:   /carbu
+
+user:
+  resource: "@UserBundle/Controller/"
+  type: annotation
