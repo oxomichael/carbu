@@ -1,11 +1,39 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
+{% include 'header.html.twig' %}
 <div class="container">
+
+<div class="page-header">
+	<h1>Consommation carburant</h1>
+</div>
+<p class="lead">Enregistrer les informations de vos pleins d'essence.</p>
+    
+<div class="row">
+<div class="col-md-4">
+    <h2>Volume moyen</h2>
+    <p>...</p>
+    <p><a class="btn btn-default" href="#" role="button">Détails &raquo;</a></p>
+</div>
+<div class="col-md-4">
+    <h2>Consommation moyenne</h2>
+    <p>...</p>
+    <p><a class="btn btn-default" href="#" role="button">Details &raquo;</a></p>
+</div>
+<div class="col-md-4">
+	<h2>Mon compte</h2>
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-	Connecté en tant que {{ app.user.username }} - <a class="link" href="{{ path('logout') }}">Déconnexion</a>
+	<p>Connecté en tant que {{ app.user.username }}</p>
+	<p><a class="btn btn-default" href="{{ path('fos_user_security_logout') }}" role="button">Déconnexion</a></p>
 {% else %}
-	<a class="link" href="{{ path('fos_user_security_login') }}">Connexion</a>
+	<p>Connectez vous...</p>
+	<p><a class="btn btn-default" href="{{ path('fos_user_security_login') }}" role="button">Connexion</a></p>
 {% endif %}
-</div> <!-- /container -->
+</div>
+</div>
+
+</div>
+{% include 'footer.html.twig' %}
 {% endblock %}
+
+
