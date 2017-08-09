@@ -1,4 +1,31 @@
 {% extends 'layout.html.twig' %}
 
+{% block body %}
+{% include 'header.html.twig' %}
+<div class="container">
+<a href="{{ path('carbu_vehicle_add') }}">Ajouter un véhicule</a>
 
-
+<h3>Liste de vos véhicules</h3>
+{% if vehicles is empty %}
+<p>Aucun véhicules</p>
+{% else %}
+<table class="table table-condensed">
+<thead>
+<tr>
+	<th>Nom</th>
+	<th>Action</th>
+</tr>
+</thead>
+<tbody>
+{% for vehicle in vehicles %}
+<tr>
+	<td>{{ vehicle.name }}</td>
+	<td><a href="{{ path('carbu_vehicle_edit', {'id': vehicle.id}) }}">Editer</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+</div>
+{% include 'footer.html.twig' %}
+{% endblock %}

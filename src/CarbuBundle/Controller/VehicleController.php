@@ -4,8 +4,13 @@ namespace CarbuBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use CarbuBundle\Entity\Vehicle;
+use CarbuBundle\Form\VehicleType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class VehicleController extends Controller
 {
@@ -16,7 +21,12 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('CarbuBundle:Vehicle:index.html.twig', array());
+        $vehicleM = $this->getDoctrine()->getManager()->getRepository('CarbuBundle:Vehicle');
+        $vehicles = $vehicleM->findAll();
+
+        return $this->render('CarbuBundle:Vehicle:index.html.twig', array(
+            'vehicles' => $vehicles,
+        ));
     }
 
     /**
@@ -29,12 +39,57 @@ class VehicleController extends Controller
     }
 
     /**
+     * @Route("/vehicle/add")
+     * @Method({"GET", "POST"})
+     */
+    public function addAction(Request $request)
+    {
+        $vehicle = new Vehicle();
+        $form = $this->get('form.factory')->create(VehicleType::class, $vehicle);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vehicle);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('notice', "Véhicule enregistré.");
+
+            return $this->redirectToRoute('carbu_vehicle_view', array('id' => $vehicle->getId()));
+        }
+
+        return $this->render('CarbuBundle:Vehicle:add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
      * @Route("/vehicle/edit/{id}")
      * @Method({"GET", "POST"})
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
-        return $this->render('CarbuBundle:Vehicle:edit.html.twig', array());
+        $vehicleM = $this->getDoctrine()->getManager()->getRepository('CarbuBundle:Vehicle');
+        $vehicle = $vehicleM->find($id);
+
+        if (null === $vehicle) {
+            throw new NotFoundHttpException("Impossible de trouver le véhicule.");
+        }
+
+        $form = $this->get('form.factory')->create(VehicleType::class, $vehicle);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vehicle);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('notice', "Véhicule modifié.");
+
+            return $this->redirectToRoute('carbu_vehicle_view', array('id' => $vehicle->getId()));
+        }
+
+        return $this->render('CarbuBundle:Vehicle:edit.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
