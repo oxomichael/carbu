@@ -17,8 +17,8 @@ class VehicleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class)
-            ->add('fuelCapacity', IntegerType::class)
-            ->add('power', IntegerType::class)
+            ->add('fuelCapacity', IntegerType::class, array('required' => false))
+            ->add('power', IntegerType::class, array('required' => false))
             ->add('save', SubmitType::class);
     }
 
