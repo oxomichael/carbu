@@ -3,6 +3,7 @@
 namespace CarbuBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Vehicle
@@ -41,6 +42,12 @@ class Vehicle
      * @ORM\Column(name="power", type="integer")
      */
     private $power;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
 
     /**
@@ -123,6 +130,29 @@ class Vehicle
     public function getPower()
     {
         return $this->power;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
 

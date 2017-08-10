@@ -49,6 +49,14 @@ class Full
      */
     private $distance;
 
+    /**
+     * @var Vehicle
+     *
+     * @ORM\ManyToOne(targetEntity="CarbuBundle\Entity\Vehicle")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vehicle;
+
 
     /**
      * Get id
@@ -155,5 +163,25 @@ class Full
     {
         return $this->distance;
     }
+
+    /**
+     * @param Vehicle $vehicle
+     * @return Full
+     */
+    public function setVehicle(Vehicle $vehicle)
+    {
+        $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    /**
+     * @return Vehicle
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
 }
+
 

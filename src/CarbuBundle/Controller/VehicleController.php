@@ -21,8 +21,12 @@ class VehicleController extends Controller
      */
     public function indexAction()
     {
+        $user = $this->getUser();
+
         $vehicleM = $this->getDoctrine()->getManager()->getRepository('CarbuBundle:Vehicle');
-        $vehicles = $vehicleM->findAll();
+        $vehicleM->findBy(array('user' => $user));
+
+        $vehicles = $vehicleM->findAll(); //byUser
 
         return $this->render('CarbuBundle:Vehicle:index.html.twig', array(
             'vehicles' => $vehicles,
@@ -49,6 +53,7 @@ class VehicleController extends Controller
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $vehicle->setUser($this->getUser());
             $em->persist($vehicle);
             $em->flush();
 

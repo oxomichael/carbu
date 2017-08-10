@@ -1,8 +1,7 @@
-{% extends 'layout.html.twig' %}
+{% extends 'CarbuBundle::layout.html.twig' %}
 
-{% block body %}
-{% include 'header.html.twig' %}
-<div class="container">
+{% block carbu_body %}
+
 <a href="{{ path('carbu_vehicle_add') }}">Ajouter un véhicule</a>
 
 <h3>Liste de vos véhicules</h3>
@@ -26,6 +25,5 @@
 </tbody>
 </table>
 {% endif %}
-</div>
-{% include 'footer.html.twig' %}
+
 {% endblock %}

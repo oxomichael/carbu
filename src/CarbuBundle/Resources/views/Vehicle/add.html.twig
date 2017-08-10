@@ -1,10 +1,6 @@
-{% extends '::layout.html.twig' %}
+{% extends 'CarbuBundle::layout.html.twig' %}
 
-{% block body %}
-{% include 'header.html.twig' %}
-<div class="container">
+{% block carbu_body %}
 <h3>Ajouter un véhicule</h3>
 {% include 'CarbuBundle:Vehicle:form.html.twig' %}
-</div>
-{% include 'footer.html.twig' %}
 {% endblock %}
