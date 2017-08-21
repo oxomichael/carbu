@@ -32,17 +32,9 @@ class VehicleController extends Controller
     }
 
     /**
-     * @Route("/vehicle/view/{id}")
-     * @Method({"GET"})
-     */
-    public function viewAction($id)
-    {
-        return $this->render('CarbuBundle:Vehicle:view.html.twig', array());
-    }
-
-    /**
      * @Route("/vehicle/add")
      * @Method({"GET", "POST"})
+     * @return Response
      */
     public function addAction(Request $request)
     {
@@ -68,6 +60,7 @@ class VehicleController extends Controller
     /**
      * @Route("/vehicle/edit/{id}")
      * @Method({"GET", "POST"})
+     * @return Response
      */
     public function editAction($id, Request $request)
     {
