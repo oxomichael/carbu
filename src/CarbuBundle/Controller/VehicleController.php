@@ -24,9 +24,7 @@ class VehicleController extends Controller
         $user = $this->getUser();
 
         $vehicleM = $this->getDoctrine()->getManager()->getRepository('CarbuBundle:Vehicle');
-        $vehicleM->findBy(array('user' => $user));
-
-        $vehicles = $vehicleM->findAll(); //byUser
+        $vehicles = $vehicleM->findBy(array('user' => $user));
 
         return $this->render('CarbuBundle:Vehicle:index.html.twig', array(
             'vehicles' => $vehicles,
