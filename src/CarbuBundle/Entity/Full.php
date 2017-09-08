@@ -31,14 +31,14 @@ class Full
     /**
      * @var string
      *
-     * @ORM\Column(name="quantity", type="decimal", precision=2, scale=2)
+     * @ORM\Column(name="quantity", type="decimal", precision=5, scale=2)
      */
     private $quantity;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=3, scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=5, scale=2)
      */
     private $price;
 
@@ -50,6 +50,13 @@ class Full
     private $distance;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="meter", type="integer")
+     */
+    private $meter = 0;
+
+    /**
      * @var Vehicle
      *
      * @ORM\ManyToOne(targetEntity="CarbuBundle\Entity\Vehicle")
@@ -57,6 +64,10 @@ class Full
      */
     private $vehicle;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get id
@@ -150,6 +161,30 @@ class Full
     public function setDistance($distance)
     {
         $this->distance = $distance;
+
+        return $this;
+    }
+
+    /**
+     * Get meter
+     *
+     * @return int
+     */
+    public function getMeter()
+    {
+        return $this->meter;
+    }
+
+    /**
+     * Set meter
+     *
+     * @param integer $meter
+     *
+     * @return Full
+     */
+    public function setMeter($meter)
+    {
+        $this->meter = $meter;
 
         return $this;
     }

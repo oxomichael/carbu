@@ -1,1 +1,9 @@
-{% extends 'layout.html.twig' %}
+{% extends 'CarbuBundle::layout.html.twig' %}
+
+{% block carbu_body %}
+
+    <h3>Editer un plein</h3>
+    {% include 'CarbuBundle:Full:form.html.twig' %}
+
+{% endblock %}
+
