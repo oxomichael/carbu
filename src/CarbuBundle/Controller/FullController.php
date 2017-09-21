@@ -2,7 +2,6 @@
 
 namespace CarbuBundle\Controller;
 
-use CarbuBundle\CarbuBundle;
 use CarbuBundle\Entity\Full;
 use CarbuBundle\Form\FullType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -49,17 +48,18 @@ class FullController extends Controller
 
         // Distance calculation
         $fullM = $em->getRepository('CarbuBundle:Full');
-        $fullLast = $fullM->findOneBy(array('vehicle' => $vehicle), array('date' => 'desc'), 1 ,0);
-
-        $lastMeter = 0;
-        if (count($fullLast) > 0) {
-            $lastMeter = $fullLast->getMeter();
-        }
 
         $full->setVehicle($vehicle);
         $form = $this->get('form.factory')->create(FullType::class, $full);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $full->setDistance($full->getMeter() - $lastMeter);
+
+            $fullPrevious = $fullM->findOneBy(array('vehicle' => $vehicle), array('date' => 'desc'));
+            if ($fullPrevious !== null) {
+                $previousMeter = $fullPrevious->getMeter();
+                $full->setDistance($full->getMeter() - $previousMeter);
+            } else {
+                $full->setDistance(0);
+            }
 
             // Save data
             $em->persist($full);
@@ -68,8 +68,6 @@ class FullController extends Controller
             $request->getSession()->getFlashBag()->add('notice', "Plein enregistré.");
 
             return $this->redirectToRoute('carbu_full_index', array('vehicleId' => $vehicleId));
-        } else {
-            $full->setMeter($lastMeter);
         }
 
         return $this->render('CarbuBundle:Full:add.html.twig', array(
@@ -97,18 +95,21 @@ class FullController extends Controller
             throw new NotFoundHttpException("Impossible de trouver le plein.");
         }
 
-        // @todo : get date < a date de ce plein
-        $fullLast = $fullM->findOneBy(array('vehicle' => $vehicle), array('date' => 'desc'), 1 ,0);
-
-        $lastMeter = 0;
-        if (count($fullLast) > 0) {
-            $lastMeter = $fullLast->getMeter();
+        $fullPrevious = $fullM->findPrevious($full->getDate(), $vehicle);
+        $previousMeter = 0;
+        if ($fullPrevious !== null) {
+            $previousMeter = $fullPrevious->getMeter();
         }
 
         $full->setVehicle($vehicle);
         $form = $this->get('form.factory')->create(FullType::class, $full);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            //$full->setDistance($full->getMeter() - $lastMeter);
+
+            if ($previousMeter != 0) {
+                $full->setDistance($full->getMeter() - $previousMeter);
+            } else {
+                $full->setDistance(0);
+            }
 
             // Save data
             $em->persist($full);
@@ -118,7 +119,7 @@ class FullController extends Controller
 
             return $this->redirectToRoute('carbu_full_index', array('vehicleId' => $vehicleId));
         } else {
-            $full->setMeter($lastMeter);
+            $full->setMeter($previousMeter);
         }
 
         return $this->render('CarbuBundle:Full:add.html.twig', array(
