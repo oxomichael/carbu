@@ -49,11 +49,18 @@ class FullController extends Controller
         // Distance calculation
         $fullM = $em->getRepository('CarbuBundle:Full');
 
+        // Previous
+        $meterLast = 0;
+        $fullPrevious = $fullM->findOneBy(array('vehicle' => $vehicle), array('date' => 'desc'));
+        if ($fullPrevious !== null) {
+            $meterLast = $fullPrevious->getMeter();
+        }
+
         $full->setVehicle($vehicle);
+        $full->setMeter($meterLast);
         $form = $this->get('form.factory')->create(FullType::class, $full);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
-            $fullPrevious = $fullM->findOneBy(array('vehicle' => $vehicle), array('date' => 'desc'));
             if ($fullPrevious !== null) {
                 $previousMeter = $fullPrevious->getMeter();
                 $full->setDistance($full->getMeter() - $previousMeter);
