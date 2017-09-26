@@ -24,7 +24,7 @@ class FullController extends Controller
         $vehicle = $vehicleM->findOneBy(array('user' => $user, 'id' => $vehicleId));
 
         $fullM = $this->getDoctrine()->getRepository('CarbuBundle:Full');
-        $fulls = $fullM->findBy(array('vehicle' => $vehicle));
+        $fulls = $fullM->findBy(array('vehicle' => $vehicle), array('date' => 'desc'));
 
         return $this->render('CarbuBundle:Full:index.html.twig', array(
             'vehicle' => $vehicle,
