@@ -1,13 +1,13 @@
 # Consommation et Statistiques Carburant
 
-## Installation
+## Installation
 1. git clone 
 2. php bin/console doctrine:schema:create
 
 ## Create user
 ```php bin/console fos:user:create --help```
 
-## TODO
+## TODO
 - UX
  * Filtrer par années
 
